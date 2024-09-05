@@ -1,0 +1,13 @@
+gymnasium
+torch
+torchvision
+opencv-python
+numpy<2.0
+tqdm
+rich
+psutil
+stable-baselines3
+pygame
+pytest
+debugpy
+moviepy
