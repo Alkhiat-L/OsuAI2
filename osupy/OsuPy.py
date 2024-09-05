@@ -358,14 +358,12 @@ class OsuPy:
         return points[int(len(points) * progress)]
 
     def hit_note(self, note: Note, score: int = 300) -> None:
+        self.score += score
+        if score >= 50:
+            self.notes_hit += 1
+        self.upcoming_notes.remove(note)
+        self.hp = min(200, self.hp + 20)
         if not note.type_f == NoteType.SLIDER:
-            self.score += score
-            if score >= 50:
-                self.notes_hit += 1
-
-            self.hp = min(200, self.hp + 20)
-            self.upcoming_notes.remove(note)
-
             self.effects.append(
                 e.ScorePopup(
                     position=(note.get_virtual_x(), note.get_virtual_y()), score=score
