@@ -390,7 +390,7 @@ class OsuPy:
             curve=self.curve_to_follow,
             game_time=self.game_time,
             mouse_pos=self.mouse.copy(),
-            upcoming_notes=[note for note in self.upcoming_notes],
+            upcoming_notes=self.upcoming_notes,
             hp=self.hp,
             score=self.score,
             accuracy=self.accuracy,
