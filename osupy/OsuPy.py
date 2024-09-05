@@ -174,6 +174,7 @@ class OsuPy:
         self, action: ActionSpace
     ) -> Tuple[dict[str, Any], float, bool, dict[str, Any]]:
         action = ActionSpace(action.delta_x, action.delta_y, action["click"])
+        original_action = action.click
         self.mouse.x += action.delta_x / 10
         self.mouse.y += action.delta_y / 10
         if self.mouse.x < 0:
@@ -235,7 +236,7 @@ class OsuPy:
             done = True
 
         if self.model == "move":
-            action.click = 0
+            action.click = original_action
         observation = self.get_observation()
         reward = self.get_reward()
 
