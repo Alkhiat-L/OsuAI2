@@ -174,7 +174,6 @@ class OsuPy:
         self, action: ActionSpace
     ) -> Tuple[dict[str, Any], float, bool, dict[str, Any]]:
         action = ActionSpace(action.delta_x, action.delta_y, action["click"])
-        original_action = action.click
         self.mouse.x += action.delta_x / 10
         self.mouse.y += action.delta_y / 10
         if self.mouse.x < 0:
@@ -235,8 +234,6 @@ class OsuPy:
             self.stop_game()
             done = True
 
-        if self.model == "move":
-            action.click = original_action
         observation = self.get_observation()
         reward = self.get_reward()
 
@@ -288,7 +285,8 @@ class OsuPy:
             error = note.time - self.game_time
             if error <= -(self.hit_window / 2):
                 self.miss()
-                self.upcoming_notes.remove(note)
+                if len(self.upcoming_notes) > 1:
+                    self.upcoming_notes.remove(note)
                 return
 
     def check_curve(self) -> None:
@@ -340,7 +338,8 @@ class OsuPy:
                     )
                 )
                 self.score += score
-                self.upcoming_notes.remove(self.upcoming_notes[0])
+                if len(self.upcoming_notes) > 1:
+                    self.upcoming_notes.remove(self.upcoming_notes[0])
                 if score >= 300:
                     self.notes_hit += 1
 
@@ -364,7 +363,8 @@ class OsuPy:
         self.score += score
         if score >= 300:
             self.notes_hit += 1
-        self.upcoming_notes.remove(note)
+        if len(self.upcoming_notes) > 1:
+            self.upcoming_notes.remove(note)
         self.hp = min(200, self.hp + 20)
         if not note.type_f == NoteType.SLIDER:
             self.effects.append(
@@ -387,14 +387,10 @@ class OsuPy:
         self.hp = max(0, self.hp - 10)
 
     def get_observation(self) -> OrderedDict[str, Any]:
-        if len(self.upcoming_notes) > 0:
-            upcoming_notes = [note for note in self.upcoming_notes]
-        else:
-            upcoming_notes = []
         return ObservationSpace(
             game_time=self.game_time,
             mouse_pos=self.mouse.copy(),
-            upcoming_notes=upcoming_notes,
+            upcoming_notes=[note for note in self.upcoming_notes],
             hp=self.hp,
             curve=self.curve_to_follow,
             score=self.score,
