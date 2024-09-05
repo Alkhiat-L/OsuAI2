@@ -270,12 +270,15 @@ class OsuPy:
                 error = 0
             if error <= self.hit_window and distance <= 54:
                 self.hit_note(note)
+                self.upcoming_notes.remove(note)
                 return
             if error <= self.hit_window * 2 and distance <= 70:
                 self.hit_note(note, 100)
+                self.upcoming_notes.remove(note)
                 return
             if error <= self.hit_window * 4 and distance <= 100:
                 self.hit_note(note, 50)
+                self.upcoming_notes.remove(note)
                 return
 
     def check_misses(self) -> None:
@@ -285,6 +288,7 @@ class OsuPy:
             error = note.time - self.game_time
             if error <= -(self.hit_window / 2):
                 self.miss()
+                self.upcoming_notes.remove(note)
                 return
 
     def check_curve(self) -> None:
