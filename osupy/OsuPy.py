@@ -197,16 +197,17 @@ class OsuPy:
                     action.click = False
             if self.curve_to_follow:
                 action.click = True
+        if len(self.upcoming_notes) > 0:
+            self.renderer.point_to_render = self.upcoming_notes[
+                0
+            ].get_virtual_position()
         if action.click and not self.hold:
             self.effects.append(e.SplashEffect(position=self.mouse.copy()))
             self.effects.append(e.ParticleEffect(position=self.mouse.copy()))
             self.check_hit()
             self.hold = True
 
-        if len(self.upcoming_notes) > 0:
-            self.renderer.point_to_render = self.upcoming_notes[
-                0
-            ].get_virtual_position()
+
         self.check_misses()
         self.check_curve()
         self.accuracy = max(1, self.notes_hit) / max(
