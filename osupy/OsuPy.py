@@ -184,11 +184,7 @@ class OsuPy:
             self.mouse.x = self.width
         if self.mouse.y > self.height:
             self.mouse.y = self.height
-        self.upcoming_notes = [
-            note
-            for note in self.upcoming_notes
-            if note.time > self.game_time - self.hit_window * 5
-        ]
+
         if self.model == "click":
             self.mouse.x = int(self.renderer.point_to_render[0])
             self.mouse.y = int(self.renderer.point_to_render[1])
@@ -224,6 +220,11 @@ class OsuPy:
         for effect in self.effects:
             effect.step(self.delta)
 
+        self.upcoming_notes = [
+            note
+            for note in self.upcoming_notes
+            if note.time > self.game_time - self.hit_window * 5
+        ]
 
         done = False
         if (
