@@ -234,6 +234,8 @@ class OsuPy:
             self.stop_game()
             done = True
 
+        if self.model == "move":
+            action.click = 0
         observation = self.get_observation()
         reward = self.get_reward()
 
@@ -384,8 +386,6 @@ class OsuPy:
         self.hp = max(0, self.hp - 10)
 
     def get_observation(self) -> OrderedDict[str, Any]:
-        if self.model == "move":
-            self.mouse['click'] = 0
         return ObservationSpace(
             game_time=self.game_time,
             mouse_pos=self.mouse.copy(),
