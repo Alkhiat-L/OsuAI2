@@ -251,36 +251,37 @@ class OsuPy:
         )
 
     def check_hit(self) -> None:
-        for note in self.upcoming_notes:
-            distance = math.sqrt(
-                (note.get_virtual_x() - self.mouse[0]) ** 2
-                + (note.get_virtual_y() - self.mouse[1]) ** 2
-            )
-            if self.model == "click":
-                distance = 0
-            error = abs(note.time - self.game_time)
-            if self.model == "move":
-                error = 0
-            if error <= self.hit_window and distance <= 54:
-                self.hit_note(note, 300)
-                return
-            if error <= self.hit_window * 2 and distance <= 70:
-                self.hit_note(note, 100)
-                return
-            if error <= self.hit_window * 4 and distance <= 100:
-                self.hit_note(note, 50)
-                return
+        if len(self.upcoming_notes) <= 0:
+            return
+        note = self.upcoming_notes[0]
+        distance = math.sqrt(
+            (note.get_virtual_x() - self.mouse[0]) ** 2
+            + (note.get_virtual_y() - self.mouse[1]) ** 2
+        )
+        if self.model == "click":
+            distance = 0
+        error = abs(note.time - self.game_time)
+        if self.model == "move":
+            error = 0
+        if error <= self.hit_window and distance <= 54:
+            self.hit_note(note, 300)
+            return
+        if error <= self.hit_window * 2 and distance <= 70:
+            self.hit_note(note, 100)
+            return
+        if error <= self.hit_window * 4 and distance <= 100:
+            self.hit_note(note, 50)
+            return
 
     def check_misses(self) -> None:
         if len(self.upcoming_notes) <= 0:
             return
-        for note in self.upcoming_notes:
-            error = note.time - self.game_time
-            if error <= -(self.hit_window / 2):
-                self.miss()
-                if len(self.upcoming_notes) > 1:
-                    self.upcoming_notes.remove(note)
-                return
+        note = self.upcoming_notes[0]
+        error = note.time - self.game_time
+        if error <= -(self.hit_window / 2):
+            self.miss()
+            self.upcoming_notes.remove(note)
+            return
 
     def check_curve(self) -> None:
         if self.curve_to_follow is None:
@@ -309,10 +310,10 @@ class OsuPy:
             if distance >= 200 or not self.hold:
                 self.curve_to_follow = None
             self.near_curve = 1
-            if progress >= 0.5 and progress < 0.7:
+            if 0.5 <= progress < 0.7:
                 score = 50
                 self.near_curve = 2
-            if progress >= 0.7 and progress < 0.9:
+            if 0.7 <= progress < 0.9:
                 score = 100
                 self.near_curve = 3
             if progress >= 0.9:
