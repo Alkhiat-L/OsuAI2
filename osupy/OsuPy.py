@@ -221,12 +221,6 @@ class OsuPy:
         for effect in self.effects:
             effect.step(self.delta)
         done = False
-        if len(self.upcoming_notes) <= 2:
-            if self.upcoming_notes[0].type_f == NoteType.SLIDER:
-                done = True
-            if len(self.upcoming_notes) <= 1:
-                done = True
-
         if (
             len(self.upcoming_notes) == 0
         ):  # self.hp <= 0 or len(self.upcoming_notes) == 0:
