@@ -269,7 +269,7 @@ class OsuPy:
             if self.model == "move":
                 error = 0
             if error <= self.hit_window and distance <= 54:
-                self.hit_note(note)
+                self.hit_note(note, 300)
                 return
             if error <= self.hit_window * 2 and distance <= 70:
                 self.hit_note(note, 100)
@@ -338,7 +338,7 @@ class OsuPy:
                 )
                 self.score += score
                 self.upcoming_notes.remove(self.upcoming_notes[0])
-                if score >= 50:
+                if score >= 300:
                     self.notes_hit += 1
 
 
@@ -357,9 +357,9 @@ class OsuPy:
             return (note.get_virtual_x(), note.get_virtual_y())
         return points[int(len(points) * progress)]
 
-    def hit_note(self, note: Note, score: int = 300) -> None:
+    def hit_note(self, note: Note, score: int) -> None:
         self.score += score
-        if score >= 50:
+        if score >= 300:
             self.notes_hit += 1
         self.upcoming_notes.remove(note)
         self.hp = min(200, self.hp + 20)
