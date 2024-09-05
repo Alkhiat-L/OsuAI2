@@ -337,10 +337,10 @@ class OsuPy:
                     )
                 )
                 self.score += score
-
+                self.upcoming_notes.remove(self.upcoming_notes[0])
                 if score >= 50:
                     self.notes_hit += 1
-                    self.upcoming_notes.remove(self.upcoming_notes[0])
+
 
     def calculate_curve_point(self, note: Note, progress: float) -> Tuple[int, int]:
         points = [(note.get_virtual_x(), note.get_virtual_y())] + [
