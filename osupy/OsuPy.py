@@ -220,14 +220,13 @@ class OsuPy:
         self.effects = [effect for effect in self.effects if not effect.is_finished()]
         for effect in self.effects:
             effect.step(self.delta)
-
-        self.upcoming_notes = [
-            note
-            for note in self.upcoming_notes
-            if note.time > self.game_time - self.hit_window * 5
-        ]
-
         done = False
+        if len(self.upcoming_notes) <= 2:
+            if self.upcoming_notes[0].type_f == NoteType.SLIDER:
+                done = True
+            if len(self.upcoming_notes) <= 1:
+                done = True
+
         if (
             len(self.upcoming_notes) == 0
         ):  # self.hp <= 0 or len(self.upcoming_notes) == 0:
@@ -388,11 +387,11 @@ class OsuPy:
 
     def get_observation(self) -> OrderedDict[str, Any]:
         return ObservationSpace(
+            curve=self.curve_to_follow,
             game_time=self.game_time,
             mouse_pos=self.mouse.copy(),
             upcoming_notes=[note for note in self.upcoming_notes],
             hp=self.hp,
-            curve=self.curve_to_follow,
             score=self.score,
             accuracy=self.accuracy,
         ).as_dict()
