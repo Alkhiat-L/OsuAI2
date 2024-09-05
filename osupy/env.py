@@ -90,14 +90,6 @@ class OsuPyEnv(gym.Env[ObsType, ActType]):
         self.osu.reset()
         if self.render_mode == "human":
             self.osu.state = States.HUMAN
-        try:
-            assert self.observation_space.contains(self.osu.get_observation())
-        except AssertionError:
-            print("Observation space does not contain the observation")
-            print(f"Observation: {self.osu.get_observation()}")
-            print(f"Observation space: {self.observation_space}")
-            raise
-
         return self.osu.get_observation(), {}
 
     def render(self):
