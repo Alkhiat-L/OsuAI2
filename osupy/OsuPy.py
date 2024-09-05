@@ -284,7 +284,6 @@ class OsuPy:
             error = note.time - self.game_time
             if error <= -(self.hit_window / 2):
                 self.miss()
-                self.upcoming_notes.remove(note)
                 return
 
     def check_curve(self) -> None:
