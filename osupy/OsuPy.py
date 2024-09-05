@@ -337,9 +337,7 @@ class OsuPy:
                     )
                 )
                 self.score += score
-                if len(self.upcoming_notes) > 1:
-                    self.upcoming_notes.remove(self.upcoming_notes[0])
-                    self.upcoming_notes.remove(self.upcoming_notes[0])
+                self.upcoming_notes.remove(self.upcoming_notes[0])
                 if score >= 300:
                     self.notes_hit += 1
 
@@ -363,11 +361,9 @@ class OsuPy:
         self.score += score
         if score >= 300:
             self.notes_hit += 1
-
+        self.upcoming_notes.remove(note)
         self.hp = min(200, self.hp + 20)
         if not note.type_f == NoteType.SLIDER:
-            if len(self.upcoming_notes) > 1:
-                self.upcoming_notes.remove(note)
             self.effects.append(
                 e.ScorePopup(
                     position=(note.get_virtual_x(), note.get_virtual_y()), score=score
