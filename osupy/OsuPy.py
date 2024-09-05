@@ -387,10 +387,14 @@ class OsuPy:
         self.hp = max(0, self.hp - 10)
 
     def get_observation(self) -> OrderedDict[str, Any]:
+        if len(self.upcoming_notes) > 0:
+            upcoming_notes = [note for note in self.upcoming_notes]
+        else:
+            upcoming_notes = []
         return ObservationSpace(
             game_time=self.game_time,
             mouse_pos=self.mouse.copy(),
-            upcoming_notes=[note for note in self.upcoming_notes],
+            upcoming_notes=upcoming_notes,
             hp=self.hp,
             curve=self.curve_to_follow,
             score=self.score,
